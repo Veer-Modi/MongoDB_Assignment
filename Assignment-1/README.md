@@ -7,6 +7,11 @@ use codinggita
 ```
 
 ```javascript
+db.createCollection("students");
+db.createCollection("courses");
+```
+
+```javascript
 db.students.insertMany([
   {
     name: "Jenil",
@@ -215,4 +220,3 @@ db.students.find()
   ]
 }
 ```
-
