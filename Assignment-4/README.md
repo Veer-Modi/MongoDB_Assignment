@@ -1340,3 +1340,774 @@ db.courses.updateOne(
   instructor: 'Prof. Krishna'
 }
 ```
+
+#### **Task 34: Create a backup of the `CodingGitaStudents` database**
+
+- Use `mongodump` to back up the entire `CodingGitaStudents` database.
+
+```js
+
+```
+
+#### **Task 35: Restore the `CodingGitaStudents` database from the backup**
+
+- Use `mongorestore` to restore the database after a backup.
+
+```js
+
+```
+
+#### **Task 36: Use `$project` to reshape data in aggregation**
+
+- Project only the `name` and `department` of students using an aggregation query.
+
+```js
+db.students.aggregate([
+  {
+    $project: {
+      name: 1,
+      department: 1,
+    },
+  },
+]);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  department: 'CSE'
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  department: 'IT'
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  department: 'CSE'
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f0'),
+  name: 'Ishita',
+  department: 'CSE'
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f1'),
+  name: 'Veer',
+  department: 'IT'
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f2'),
+  name: 'Shubham',
+  department: 'ME'
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f3'),
+  name: 'Kalpan',
+  department: 'ECE'
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f4'),
+  name: 'Garvit',
+  department: 'CSE'
+}
+```
+
+#### **Task 37: Use `$unwind` to deconstruct the courses array**
+
+- Use `$unwind` to split the `coursesEnrolled` array into individual documents.
+
+```js
+db.students.aggregate([
+  {
+    $unwind: "$coursesEnrolled",
+  },
+]);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: 'MATH202',
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: 'PHY101',
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: 'CS202',
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  rollNumber: 'CS1002',
+  department: 'IT',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: 'CS101',
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  rollNumber: 'CS1002',
+  department: 'IT',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: 'CS303',
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+....
+```
+
+#### **Task 38: Use `$limit` to retrieve only the first 3 students**
+
+- Use `$limit` to limit the result to the first 3 students in the `students` collection.
+
+```js
+db.students.aggregate([
+  {
+    $limit: 3,
+  },
+]);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'MATH202',
+    'PHY101',
+    'CS202'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  rollNumber: 'CS1002',
+  department: 'IT',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'CS303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  rollNumber: 'CS1003',
+  department: 'CSE',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS301',
+    'MATH303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+```
+
+#### **Task 39: Use `$skip` to skip the first 2 students and get the rest**
+
+- Use `$skip` to fetch all students except the first two.
+
+```js
+db.students.aggregate([
+  {
+    $skip: 2,
+  },
+]);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  rollNumber: 'CS1003',
+  department: 'CSE',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS301',
+    'MATH303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f0'),
+  name: 'Ishita',
+  rollNumber: 'CS1005',
+  department: 'CSE',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'PHY101',
+    'CHEM101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f1'),
+  name: 'Veer',
+  rollNumber: 'CS1006',
+  department: 'IT',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS201',
+    'MATH202',
+    'DSA201'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f2'),
+  name: 'Shubham',
+  rollNumber: 'CS1007',
+  department: 'ME',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'ME301',
+    'MATH303',
+    'THERMO101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f3'),
+  name: 'Kalpan',
+  rollNumber: 'CS1008',
+  department: 'ECE',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'ECE101',
+    'MATH101',
+    'PHY101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f4'),
+  name: 'Garvit',
+  rollNumber: 'CS1009',
+  department: 'CSE',
+  year: 4,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS401',
+    'AI402',
+    'MATH402'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+```
+
+#### **Task 40: Use `$lookup` to join student data with courses**
+
+- Use `$lookup` to fetch the course information for students.
+
+```js
+db.students.aggregate([
+  {
+    $lookup: {
+      from: "courses",
+      localField: "enrolledCourses",
+      foreignField: "courseCode",
+      as: "courseDetails",
+    },
+  },
+]);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'MATH202',
+    'PHY101',
+    'CS202'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: [
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ee'),
+      courseCode: 'PHY101',
+      name: 'Physics I',
+      credits: 4,
+      instructor: 'Prof. Arjun'
+    }
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  rollNumber: 'CS1002',
+  department: 'IT',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'CS303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: [
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ec'),
+      courseCode: 'CS101',
+      name: 'Intro to Programming',
+      credits: 3,
+      instructor: 'Prof. Krishna'
+    }
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  rollNumber: 'CS1003',
+  department: 'CSE',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS301',
+    'MATH303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: []
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f0'),
+  name: 'Ishita',
+  rollNumber: 'CS1005',
+  department: 'CSE',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'PHY101',
+    'CHEM101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: [
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ec'),
+      courseCode: 'CS101',
+      name: 'Intro to Programming',
+      credits: 3,
+      instructor: 'Prof. Krishna'
+    },
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ee'),
+      courseCode: 'PHY101',
+      name: 'Physics I',
+      credits: 4,
+      instructor: 'Prof. Arjun'
+    }
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f1'),
+  name: 'Veer',
+  rollNumber: 'CS1006',
+  department: 'IT',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS201',
+    'MATH202',
+    'DSA201'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: []
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f2'),
+  name: 'Shubham',
+  rollNumber: 'CS1007',
+  department: 'ME',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'ME301',
+    'MATH303',
+    'THERMO101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: []
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f3'),
+  name: 'Kalpan',
+  rollNumber: 'CS1008',
+  department: 'ECE',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'ECE101',
+    'MATH101',
+    'PHY101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ],
+  courseDetails: [
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ed'),
+      courseCode: 'MATH101',
+      name: 'Mathematics I',
+      credits: 4,
+      instructor: 'Prof. Priyesha'
+    },
+    {
+      _id: ObjectId('677cccfe4f57c817046e50ee'),
+      courseCode: 'PHY101',
+      name: 'Physics I',
+      credits: 4,
+      instructor: 'Prof. Arjun'
+    }
+  ]
+}
+.....
+```
+
+#### **Task 41: Create a new collection for storing `studentFeedback`**
+
+- Create a collection `studentFeedback` with fields: `studentRollNumber`, `feedbackText`, `date`.
+
+```js
+db.createCollection("studentFeedback");
+```
+
+```js
+db.studentFeedback.insertMany([
+  {
+    studentRollNumber: "CS1001",
+    feedbackText: "The course material is very helpful.",
+    date: new Date("2025-01-01"),
+  },
+  {
+    studentRollNumber: "CS1002",
+    feedbackText: "The instructor was very engaging.",
+    date: new Date("2025-01-03"),
+  },
+  {
+    studentRollNumber: "CS1003",
+    feedbackText: "More practical sessions would be great.",
+    date: new Date("2025-01-05"),
+  },
+  {
+    studentRollNumber: "CS1004",
+    feedbackText: "The course pace was perfect.",
+    date: new Date("2025-01-07"),
+  },
+  {
+    studentRollNumber: "CS1005",
+    feedbackText: "The assignments were challenging but fun.",
+    date: new Date("2025-01-09"),
+  },
+]);
+```
+
+#### **Task 42: Query the `studentFeedback` collection to find feedback from a specific student**
+
+- Use `find()` to retrieve feedback from `Jenil`.
+
+```js
+db.students.find({ name: "Jenil" }, { rollNumber: 1, _id: 0 });
+
+{
+  rollNumber: 'CS1001'
+}
+
+db.studentFeedback.find({ studentRollNumber: "CS1001" }).pretty();
+
+{
+  _id: ObjectId('677d1ddd55ea85235e7e7572'),
+  studentRollNumber: 'CS1001',
+  feedbackText: 'The course material is very helpful.',
+  date: 2025-01-01T00:00:00.000Z
+}
+```
+
+#### **Task 43: Use `$set` to update multiple fields at once**
+
+- Use the `$set` operator to update the `department` and `coursesEnrolled` fields for `Arjun`.
+
+```js
+db.students.updateOne(
+  { name: "Arjun" },
+  {
+    $set: {
+      department: "Computer Science",
+      enrolledCourses: ["Data Structures", "Algorithms", "Web Development"],
+    },
+  }
+);
+
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  rollNumber: 'CS1003',
+  department: 'Computer Science',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'Data Structures',
+    'Algorithms',
+    'Web Development'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+```
+
+#### **Task 44: Create a custom index on the `coursesEnrolled` field**
+
+- Create an index on the `coursesEnrolled` array for faster querying.
+
+```js
+db.students.createIndex({ enrolledCourses: 1 });
+
+enrolledCourses_1;
+```
+
+#### **Task 45: Perform a query on nested documents in `students` collection**
+
+- Query for students who have grades `A` in their courses.
+
+```js
+db.students
+  .find({
+    grades: 90,
+  })
+  .pretty();
+
+  {
+  _id: ObjectId('677cccf74f57c817046e50e8'),
+  name: 'Jenil',
+  rollNumber: 'CS1001',
+  department: 'CSE',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'MATH202',
+    'PHY101',
+    'CS202'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50e9'),
+  name: 'Mahir',
+  rollNumber: 'CS1002',
+  department: 'IT',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'CS303'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cccf74f57c817046e50ea'),
+  name: 'Arjun',
+  rollNumber: 'CS1003',
+  department: 'Computer Science',
+  year: 3,
+  activeStatus: true,
+  enrolledCourses: [
+    'Data Structures',
+    'Algorithms',
+    'Web Development'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f0'),
+  name: 'Ishita',
+  rollNumber: 'CS1005',
+  department: 'CSE',
+  year: 1,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS101',
+    'PHY101',
+    'CHEM101'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+{
+  _id: ObjectId('677cdb1a4f57c817046e50f1'),
+  name: 'Veer',
+  rollNumber: 'CS1006',
+  department: 'IT',
+  year: 2,
+  activeStatus: true,
+  enrolledCourses: [
+    'CS201',
+    'MATH202',
+    'DSA201'
+  ],
+  graduationYear: 2025,
+  grades: [
+    85,
+    90,
+    78
+  ]
+}
+....
+```
